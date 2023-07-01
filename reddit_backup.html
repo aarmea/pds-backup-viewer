@@ -21,12 +21,17 @@
         <p>Title: <span id="reddit-title"></span></p>
         <p>Originally published by /u/<span id="reddit-username"></span> on <time id="reddit-time"></time></p>
         <p>Score at time of retrieval: <span id="reddit-score"></span></p>
-        <pre id="reddit-body"></pre>
+        <p>Content:</p>
+        <blockquote>
+            <div id="reddit-body"></div>
+        </blockquote>
     </section>
     <footer>
         <p>This viewer is available <a href="https://github.com/aarmea/pds-backup-viewer">on GitHub</a> under the terms of <a href="https://unlicense.org">the Unlicense</a>.</p>
     </footer>
+    <script src="marked.min.js"></script>
     <script src="papaparse.min.js"></script>
+    <script src="purify.min.js"></script>
     <script>
 function getBackupUrl(user) {
     return "reddit_backup_" + user + ".csv";
@@ -77,8 +82,7 @@ Papa.parse(getBackupUrl(user), {
             // TODO: Parse this
             timeElement.textContent = row.data["Timestamp UTC"];
             scoreElement.textContent = row.data.Score;
-            // TODO: Parse, sanitize, and render the Markdown
-            bodyElement.textContent = base64ToStr(row.data.Body);
+            bodyElement.innerHTML = DOMPurify.sanitize(marked.parse(base64ToStr(row.data.Body)));
 
             loadingElement.hidden = true;
             contentElement.hidden = false;
