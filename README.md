@@ -15,7 +15,7 @@ A valid URL could look something like this:
 
 Provided these parameters, it will load and render the content:
 
-TODO: Screenshot
+![Screenshot of the viewer opened to that link](screenshot.png)
 
 ## Known issues
 
