@@ -19,7 +19,7 @@
             <p>This viewer requires Javascript to load content.</p>
         </noscript>
         <p>Title: <span id="reddit-title"></span></p>
-        <p>Originally published by /u/<span id="reddit-username"></span> on <time id="reddit-time"></time></p>
+        <p>Originally published by /u/<span id="reddit-username"></span> on <time id="reddit-time"></time>.</p>
         <p>Score at time of retrieval: <span id="reddit-score"></span></p>
         <p>Content:</p>
         <blockquote>
@@ -79,10 +79,12 @@ Papa.parse(getBackupUrl(user), {
         if (permalink == row.data.Permalink) {
             titleElement.textContent = row.data.Title;
             usernameElement.textContent = user;
-            // TODO: Parse this
-            timeElement.textContent = row.data["Timestamp UTC"];
             scoreElement.textContent = row.data.Score;
             bodyElement.innerHTML = DOMPurify.sanitize(marked.parse(base64ToStr(row.data.Body)));
+
+            date = new Date(row.data["Timestamp UTC"] * 1000);
+            timeElement.innerHTML = date.toLocaleString();
+            timeElement.setAttribute("datetime", date.toISOString());
 
             loadingElement.hidden = true;
             contentElement.hidden = false;
